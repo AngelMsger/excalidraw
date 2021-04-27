@@ -126,7 +126,7 @@ export default function App() {
         <Excalidraw
           ref={excalidrawRef}
           initialData={InitialData}
-          onChange={(elements, state) => {
+          onChange={(elements, state) =>
             console.log("Elements :", elements, "State : ", state)
           }
           onPointerUpdate={(payload) => console.log(payload)}
@@ -173,7 +173,7 @@ For development use :point_down:
 ```js
 <script
   type="text/javascript"
-  src="https://unpkg.com/@excalidraw/excalidraw@0.6.0/dist/excalidraw.development.js"
+  src="https://unpkg.com/@excalidraw/excalidraw@0.7.0/dist/excalidraw.development.js"
 ></script>
 ```
 
@@ -182,7 +182,7 @@ For production use :point_down:
 ```js
 <script
   type="text/javascript"
-  src="https://unpkg.com/@excalidraw/excalidraw@0.6.0/dist/excalidraw.production.min.js"
+  src="https://unpkg.com/@excalidraw/excalidraw@0.7.0/dist/excalidraw.production.min.js"
 ></script>
 ```
 
@@ -201,7 +201,7 @@ You will need to make sure `react`, `react-dom` is available as shown in the bel
 
     <script
       type="text/javascript"
-      src="https://unpkg.com/@excalidraw/excalidraw@0.6.0/dist/excalidraw.development.js"
+      src="https://unpkg.com/@excalidraw/excalidraw@0.7.0/dist/excalidraw.development.js"
     ></script>
   </head>
 
@@ -443,7 +443,7 @@ You can pass a `ref` when you want to access some excalidraw APIs. We expose the
 | getSceneElements | <pre> () => <a href="https://github.com/excalidraw/excalidraw/blob/master/src/element/types.ts#L78">ExcalidrawElement[]</a></pre> | Returns all the elements excluding the deleted in the scene |
 | getAppState | <pre> () => <a href="https://github.com/excalidraw/excalidraw/blob/master/src/types.ts#L37">AppState</a></pre> | Returns current appState |
 | history | `{ clear: () => void }` | This is the history API. `history.clear()` will clear the history |
-| setScrollToContent | <pre> (<a href="https://github.com/excalidraw/excalidraw/blob/master/src/element/types.ts#L78">ExcalidrawElement[]</a>) => void </pre> | Scroll to the nearest element to center |
+| scrollToContent | <pre> (target?: <a href="https://github.com/excalidraw/excalidraw/blob/master/src/element/types.ts#L78">ExcalidrawElement</a> &#124; <a href="https://github.com/excalidraw/excalidraw/blob/master/src/element/types.ts#L78">ExcalidrawElement</a>[]) => void </pre> | Scroll the nearest element out of the elements supplied to the center. Defaults to the elements on the scene. |
 | refresh | `() => void` | Updates the offsets for the Excalidraw component so that the coordinates are computed correctly (for example the cursor position). You don't have to call this when the position is changed on page scroll or when the excalidraw container resizes (we handle that ourselves). For any other cases if the position of excalidraw is updated (example due to scroll on parent container and not page scroll) you should call this API. |
 | [importLibrary](#importlibrary) | `(url: string, token?: string) => void` | Imports library from given URL |
 | setToastMessage | `(message: string) => void` | This API can be used to show the toast with custom message. |
