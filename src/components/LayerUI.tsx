@@ -30,9 +30,8 @@ import CollabButton from "./CollabButton";
 import { ErrorDialog } from "./ErrorDialog";
 import { ExportCB, ExportDialog } from "./ExportDialog";
 import { FixedSideContainer } from "./FixedSideContainer";
-import { GitHubCorner } from "./GitHubCorner";
 import { HintViewer } from "./HintViewer";
-import { exportFile, load, shield, trash } from "./icons";
+import { exportFile, load, trash } from "./icons";
 import { Island } from "./Island";
 import "./LayerUI.scss";
 import { LibraryUnit } from "./LibraryUnit";
@@ -68,7 +67,8 @@ interface LayerUIProps {
     appState: AppState,
     canvas: HTMLCanvasElement | null,
   ) => void;
-  renderCustomFooter?: (isMobile: boolean) => JSX.Element;
+  renderTopRightUI?: (isMobile: boolean, appState: AppState) => JSX.Element;
+  renderCustomFooter?: (isMobile: boolean, appState: AppState) => JSX.Element;
   viewModeEnabled: boolean;
   libraryReturnUrl: ExcalidrawProps["libraryReturnUrl"];
   UIOptions: AppProps["UIOptions"];
@@ -371,6 +371,7 @@ const LayerUI = ({
   toggleZenMode,
   isCollaborating,
   onExportToBackend,
+  renderTopRightUI,
   renderCustomFooter,
   viewModeEnabled,
   libraryReturnUrl,
@@ -381,22 +382,6 @@ const LayerUI = ({
 }: LayerUIProps) => {
   const isMobile = useIsMobile();
 
-  const renderEncryptedIcon = () => (
-    <a
-      className={clsx("encrypted-icon tooltip zen-mode-visibility", {
-        "zen-mode-visibility--hidden": zenModeEnabled,
-      })}
-      href="https://blog.excalidraw.com/end-to-end-encryption/"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={t("encrypted.link")}
-    >
-      <Tooltip label={t("encrypted.tooltip")} position="above" long={true}>
-        {shield}
-      </Tooltip>
-    </a>
-  );
-
   const renderExportDialog = () => {
     if (!UIOptions.canvasActions.export) {
       return null;
@@ -406,20 +391,18 @@ const LayerUI = ({
       exportedElements,
       scale,
     ) => {
-      if (canvas) {
-        await exportCanvas(type, exportedElements, appState, canvas, {
-          exportBackground: appState.exportBackground,
-          name: appState.name,
-          viewBackgroundColor: appState.viewBackgroundColor,
-          scale,
-          shouldAddWatermark: appState.shouldAddWatermark,
-        })
-          .catch(muteFSAbortError)
-          .catch((error) => {
-            console.error(error);
-            setAppState({ errorMessage: error.message });
-          });
-      }
+      await exportCanvas(type, exportedElements, appState, {
+        exportBackground: appState.exportBackground,
+        name: appState.name,
+        viewBackgroundColor: appState.viewBackgroundColor,
+        scale,
+        shouldAddWatermark: appState.shouldAddWatermark,
+      })
+        .catch(muteFSAbortError)
+        .catch((error) => {
+          console.error(error);
+          setAppState({ errorMessage: error.message });
+        });
     };
 
     return (
@@ -604,24 +587,30 @@ const LayerUI = ({
               )}
             </Section>
           )}
-          <UserList
-            className={clsx("zen-mode-transition", {
-              "transition-right": zenModeEnabled,
-            })}
+          <div
+            className={clsx(
+              "layer-ui__wrapper__top-right zen-mode-transition",
+              {
+                "transition-right": zenModeEnabled,
+              },
+            )}
           >
-            {appState.collaborators.size > 0 &&
-              Array.from(appState.collaborators)
-                // Collaborator is either not initialized or is actually the current user.
-                .filter(([_, client]) => Object.keys(client).length !== 0)
-                .map(([clientId, client]) => (
-                  <Tooltip
-                    label={client.username || "Unknown user"}
-                    key={clientId}
-                  >
-                    {actionManager.renderAction("goToCollaborator", clientId)}
-                  </Tooltip>
-                ))}
-          </UserList>
+            <UserList>
+              {appState.collaborators.size > 0 &&
+                Array.from(appState.collaborators)
+                  // Collaborator is either not initialized or is actually the current user.
+                  .filter(([_, client]) => Object.keys(client).length !== 0)
+                  .map(([clientId, client]) => (
+                    <Tooltip
+                      label={client.username || "Unknown user"}
+                      key={clientId}
+                    >
+                      {actionManager.renderAction("goToCollaborator", clientId)}
+                    </Tooltip>
+                  ))}
+            </UserList>
+            {renderTopRightUI?.(isMobile, appState)}
+          </div>
         </div>
       </FixedSideContainer>
     );
@@ -629,60 +618,60 @@ const LayerUI = ({
 
   const renderBottomAppMenu = () => {
     return (
-      <div
-        className={clsx("App-menu App-menu_bottom zen-mode-transition", {
-          "App-menu_bottom--transition-left": zenModeEnabled,
-        })}
+      <footer
+        role="contentinfo"
+        className="layer-ui__wrapper__footer App-menu App-menu_bottom"
       >
-        <Stack.Col gap={2}>
-          <Section heading="canvasActions">
-            <Island padding={1}>
-              <ZoomActions
-                renderAction={actionManager.renderAction}
-                zoom={appState.zoom}
-              />
-            </Island>
-            {renderEncryptedIcon()}
-          </Section>
-        </Stack.Col>
-      </div>
+        <div
+          className={clsx(
+            "layer-ui__wrapper__footer-left zen-mode-transition",
+            {
+              "layer-ui__wrapper__footer-left--transition-left": zenModeEnabled,
+            },
+          )}
+        >
+          <Stack.Col gap={2}>
+            <Section heading="canvasActions">
+              <Island padding={1}>
+                <ZoomActions
+                  renderAction={actionManager.renderAction}
+                  zoom={appState.zoom}
+                />
+              </Island>
+            </Section>
+          </Stack.Col>
+        </div>
+        <div
+          className={clsx(
+            "layer-ui__wrapper__footer-center zen-mode-transition",
+            {
+              "layer-ui__wrapper__footer-left--transition-bottom": zenModeEnabled,
+            },
+          )}
+        >
+          {renderCustomFooter?.(false, appState)}
+        </div>
+        <div
+          className={clsx(
+            "layer-ui__wrapper__footer-right zen-mode-transition",
+            {
+              "transition-right disable-pointerEvents": zenModeEnabled,
+            },
+          )}
+        >
+          {actionManager.renderAction("toggleShortcuts")}
+        </div>
+        <button
+          className={clsx("disable-zen-mode", {
+            "disable-zen-mode--visible": showExitZenModeBtn,
+          })}
+          onClick={toggleZenMode}
+        >
+          {t("buttons.exitZenMode")}
+        </button>
+      </footer>
     );
   };
-
-  const renderGitHubCorner = () => {
-    return (
-      <aside
-        className={clsx(
-          "layer-ui__wrapper__github-corner zen-mode-transition",
-          {
-            "transition-right": zenModeEnabled,
-          },
-        )}
-      >
-        <GitHubCorner theme={appState.theme} />
-      </aside>
-    );
-  };
-  const renderFooter = () => (
-    <footer role="contentinfo" className="layer-ui__wrapper__footer">
-      <div
-        className={clsx("zen-mode-transition", {
-          "transition-right disable-pointerEvents": zenModeEnabled,
-        })}
-      >
-        {renderCustomFooter?.(false)}
-        {actionManager.renderAction("toggleShortcuts")}
-      </div>
-      <button
-        className={clsx("disable-zen-mode", {
-          "disable-zen-mode--visible": showExitZenModeBtn,
-        })}
-        onClick={toggleZenMode}
-      >
-        {t("buttons.exitZenMode")}
-      </button>
-    </footer>
-  );
 
   const dialogs = (
     <>
@@ -746,8 +735,6 @@ const LayerUI = ({
       {dialogs}
       {renderFixedSideContainer()}
       {renderBottomAppMenu()}
-      {renderGitHubCorner()}
-      {renderFooter()}
       {appState.scrolledOutside && (
         <button
           className="scroll-back-to-content"

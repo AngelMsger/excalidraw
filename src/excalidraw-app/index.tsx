@@ -51,7 +51,11 @@ import {
   saveToLocalStorage,
 } from "./data/localStorage";
 import CustomStats from "./CustomStats";
-import { RestoredDataState } from "../data/restore";
+import { restoreAppState, RestoredDataState } from "../data/restore";
+import { Tooltip } from "../components/Tooltip";
+import { shield } from "../components/icons";
+
+import "./index.scss";
 
 const languageDetector = new LanguageDetector();
 languageDetector.init({
@@ -161,6 +165,20 @@ const initializeScene = async (opts: {
   return null;
 };
 
+const PlusLinkJSX = (
+  <p style={{ direction: "ltr", unicodeBidi: "embed" }}>
+    Introducing Excalidraw+
+    <br />
+    <a
+      href="https://plus.excalidraw.com/?utm_source=excalidraw&utm_medium=banner&utm_campaign=launch"
+      target="_blank"
+      rel="noreferrer"
+    >
+      Try out now!
+    </a>
+  </p>
+);
+
 const ExcalidrawWrapper = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const currentLangCode = languageDetector.detect() || defaultLang.code;
@@ -225,7 +243,10 @@ const ExcalidrawWrapper = () => {
       } else {
         initializeScene({ collabAPI }).then((scene) => {
           if (scene) {
-            excalidrawAPI.updateScene(scene);
+            excalidrawAPI.updateScene({
+              ...scene,
+              appState: restoreAppState(scene.appState, null),
+            });
           }
         });
       }
@@ -290,8 +311,41 @@ const ExcalidrawWrapper = () => {
     }
   };
 
+  const renderTopRightUI = useCallback(
+    (isMobile: boolean, appState: AppState) => {
+      return (
+        <div
+          style={{
+            width: "24ch",
+            fontSize: "0.7em",
+            textAlign: "center",
+          }}
+        >
+          {/* <GitHubCorner theme={appState.theme} dir={document.dir} /> */}
+          {/* FIXME remove after 2021-05-20 */}
+          {PlusLinkJSX}
+        </div>
+      );
+    },
+    [],
+  );
+
   const renderFooter = useCallback(
     (isMobile: boolean) => {
+      const renderEncryptedIcon = () => (
+        <a
+          className="encrypted-icon tooltip"
+          href="https://blog.excalidraw.com/end-to-end-encryption/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t("encrypted.link")}
+        >
+          <Tooltip label={t("encrypted.tooltip")} position="above" long={true}>
+            {shield}
+          </Tooltip>
+        </a>
+      );
+
       const renderLanguageList = () => (
         <LanguageList
           onChange={(langCode) => {
@@ -303,14 +357,43 @@ const ExcalidrawWrapper = () => {
         />
       );
       if (isMobile) {
+        const isTinyDevice = window.innerWidth < 362;
         return (
-          <fieldset>
-            <legend>{t("labels.language")}</legend>
-            {renderLanguageList()}
-          </fieldset>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: isTinyDevice ? "column" : "row",
+            }}
+          >
+            <fieldset>
+              <legend>{t("labels.language")}</legend>
+              {renderLanguageList()}
+            </fieldset>
+            {/* FIXME remove after 2021-05-20 */}
+            <div
+              style={{
+                width: "24ch",
+                fontSize: "0.7em",
+                textAlign: "center",
+                marginTop: isTinyDevice ? 16 : undefined,
+                marginLeft: "auto",
+                marginRight: isTinyDevice ? "auto" : undefined,
+                padding: "4px 2px",
+                border: "1px dashed #aaa",
+                borderRadius: 12,
+              }}
+            >
+              {PlusLinkJSX}
+            </div>
+          </div>
         );
       }
-      return renderLanguageList();
+      return (
+        <>
+          {renderEncryptedIcon()}
+          {renderLanguageList()}
+        </>
+      );
     },
     [langCode],
   );
@@ -331,6 +414,7 @@ const ExcalidrawWrapper = () => {
     const serializedItems = JSON.stringify(items);
     localStorage.setItem(STORAGE_KEYS.LOCAL_STORAGE_LIBRARY, serializedItems);
   };
+
   return (
     <>
       <Excalidraw
@@ -341,6 +425,7 @@ const ExcalidrawWrapper = () => {
         isCollaborating={collabAPI?.isCollaborating()}
         onPointerUpdate={collabAPI?.onPointerUpdate}
         onExportToBackend={onExportToBackend}
+        renderTopRightUI={renderTopRightUI}
         renderFooter={renderFooter}
         langCode={langCode}
         renderCustomStats={renderCustomStats}

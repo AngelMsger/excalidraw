@@ -20,6 +20,7 @@ const Excalidraw = (props: ExcalidrawProps) => {
     isCollaborating,
     onPointerUpdate,
     onExportToBackend,
+    renderTopRightUI,
     renderFooter,
     langCode = defaultLang.code,
     viewModeEnabled,
@@ -72,6 +73,7 @@ const Excalidraw = (props: ExcalidrawProps) => {
         isCollaborating={isCollaborating}
         onPointerUpdate={onPointerUpdate}
         onExportToBackend={onExportToBackend}
+        renderTopRightUI={renderTopRightUI}
         renderFooter={renderFooter}
         langCode={langCode}
         viewModeEnabled={viewModeEnabled}
@@ -125,3 +127,4 @@ export {
   exportToBlob,
   exportToSvg,
 } from "../../packages/utils";
+export { serializeAsJSON } from "../../data/json";
