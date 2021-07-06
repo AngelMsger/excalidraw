@@ -66,7 +66,7 @@ export const FONT_FAMILY = {
   HYChenMeiZiJ: 1,
   Virgil: 2,
   Helvetica: 3,
-  Cascadia: 4
+  Cascadia: 4,
 };
 
 export const WINDOWS_EMOJI_FALLBACK_FONT = "Segoe UI Emoji";
