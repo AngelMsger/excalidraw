@@ -70,8 +70,6 @@ const canvas = exportToCanvas(
   {
     exportBackground: true,
     viewBackgroundColor: "#ffffff",
-    shouldAddWatermark: false,
-    scale: 1,
   },
   createCanvas,
 );

@@ -1,6 +1,6 @@
-import { FontFamily } from "./element/types";
 import cssVariables from "./css/variables.module.scss";
 import { AppProps } from "./types";
+import { FontFamilyValues } from "./element/types";
 
 export const APP_NAME = "Excalidraw";
 
@@ -63,16 +63,16 @@ export const CLASSES = {
 
 // 1-based in case we ever do `if(element.fontFamily)`
 export const FONT_FAMILY = {
-  1: "HYChenMeiZiJ",
-  2: "Virgil",
-  3: "Helvetica",
-  4: "Cascadia",
-} as const;
+  HYChenMeiZiJ: 1,
+  Virgil: 2,
+  Helvetica: 3,
+  Cascadia: 4
+};
 
 export const WINDOWS_EMOJI_FALLBACK_FONT = "Segoe UI Emoji";
 
 export const DEFAULT_FONT_SIZE = 20;
-export const DEFAULT_FONT_FAMILY: FontFamily = 1;
+export const DEFAULT_FONT_FAMILY: FontFamilyValues = FONT_FAMILY.HYChenMeiZiJ;
 export const DEFAULT_TEXT_ALIGN = "left";
 export const DEFAULT_VERTICAL_ALIGN = "top";
 export const DEFAULT_VERSION = "{version}";
@@ -132,11 +132,11 @@ export const DEFAULT_UI_OPTIONS: AppProps["UIOptions"] = {
   canvasActions: {
     changeViewBackgroundColor: true,
     clearCanvas: true,
-    export: true,
+    export: { saveFileToDisk: true },
     loadScene: true,
-    saveAsScene: true,
-    saveScene: true,
+    saveToActiveFile: true,
     theme: true,
+    saveAsImage: true,
   },
 };
 
@@ -145,3 +145,6 @@ export const MQ_MAX_WIDTH_LANDSCAPE = 1000;
 export const MQ_MAX_HEIGHT_LANDSCAPE = 500;
 
 export const MAX_DECIMALS_FOR_SVG_EXPORT = 2;
+
+export const EXPORT_SCALES = [1, 2, 3];
+export const DEFAULT_EXPORT_PADDING = 10; // px

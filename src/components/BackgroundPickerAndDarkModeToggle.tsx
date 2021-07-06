@@ -15,6 +15,6 @@ export const BackgroundPickerAndDarkModeToggle = ({
 }) => (
   <div style={{ display: "flex" }}>
     {actionManager.renderAction("changeViewBackgroundColor")}
-    {showThemeBtn && <>{actionManager.renderAction("toggleTheme")}</>}
+    {showThemeBtn && actionManager.renderAction("toggleTheme")}
   </div>
 );

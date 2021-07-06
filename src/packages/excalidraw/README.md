@@ -24,6 +24,10 @@ By default it will try to load the files from `https://unpkg.com/@excalidraw/exc
 
 If you want to load assets from a different path you can set a variable `window.EXCALIDRAW_ASSET_PATH` depending on environment (for example if you have different URL's for dev and prod) to the url from where you want to load the assets.
 
+#### Note
+
+**If you don't want to wait for the next stable release and try out the unreleased changes you can use [@excalidraw/excalidraw-next](https://www.npmjs.com/package/@excalidraw/excalidraw-next).**
+
 ### Demo
 
 [Try here](https://codesandbox.io/s/excalidraw-ehlz3).
@@ -149,7 +153,7 @@ To view the full example visit :point_down:
 
 </details>
 
-Since Excalidraw doesn't support server side rendering yet so you will have to make sure the component is rendered once host is mounted.
+Since Excalidraw doesn't support server side rendering yet, you should render the component once the host is mounted.
 
 ```js
 import { useState, useEffect } from "react";
@@ -157,7 +161,7 @@ export default function IndexPage() {
   const [Comp, setComp] = useState(null);
   useEffect(() => {
     import("@excalidraw/excalidraw").then((comp) => setComp(comp.default));
-  });
+  }, []);
   return <>{Comp && <Comp />}</>;
 }
 ```
@@ -819,5 +823,4 @@ This function returns a svg with the exported elements.
 | --- | --- | --- | --- |
 | exportBackground | boolean | true | Indicates whether background should be exported |
 | viewBackgroundColor | string | #fff | The default background color |
-| shouldAddWatermark | boolean | false | Indicates whether watermark should be exported |
 | exportWithDarkMode | boolean | false | Indicates whether to export with dark mode |

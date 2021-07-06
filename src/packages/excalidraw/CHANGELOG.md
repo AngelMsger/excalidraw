@@ -11,6 +11,58 @@ The change should be grouped under one of the below section and must contain PR 
 Please add the latest change on the top under the correct section.
 -->
 
+## Unreleased
+
+**This changes are not yet released but you can still try it out in [@excalidraw/excalidraw-next](https://www.npmjs.com/package/@excalidraw/excalidraw-next).**
+
+## Excalidraw API
+
+### Features
+
+- [`restore(data, localAppState, localElements)`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#restore) and [`restoreElements(elements, localElements)`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#restoreElements) now take `localElements` argument which will be used to ensure existing elements' versions are used and incremented. This fixes an issue where importing the same file would resolve to elements with older versions, potentially causing issues when reconciling [#3797](https://github.com/excalidraw/excalidraw/pull/3797).
+
+  #### BREAKING CHANGE
+
+  - `localElements` argument is mandatory (can be `null`/`undefined`) if using TypeScript.
+
+- Support `appState.exportEmbedScene` attribute in [`exportToSvg`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#exportToSvg) which allows to embed the scene data [#3777](https://github.com/excalidraw/excalidraw/pull/3777).
+
+  #### BREAKING CHANGE
+
+  - The attribute `metadata` is now removed as `metadata` was only used to embed scene data which is now supported with the `appState.exportEmbedScene` attribute.
+  - [`exportToSvg`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#exportToSvg) now resolves to a promise which resolves to `svg` of the exported drawing.
+
+- Expose [`loadLibraryFromBlob`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#loadLibraryFromBlobY), [`loadFromBlob`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#loadFromBlob), and [`getFreeDrawSvgPath`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#getFreeDrawSvgPath) [#3764](https://github.com/excalidraw/excalidraw/pull/3764).
+
+- Expose [`FONT_FAMILY`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#FONT_FAMILY) so that consumer can use when passing `initialData.appState.currentItemFontFamily` [#3710](https://github.com/excalidraw/excalidraw/pull/3710).
+
+- Added prop [`autoFocus`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#autoFocus) to focus the excalidraw component on page load when enabled, defaults to false [#3691](https://github.com/excalidraw/excalidraw/pull/3691).
+
+  Note: Earlier Excalidraw component was focussed by default on page load, you need to enable `autoFocus` prop to retain the same behaviour.
+
+- Added prop `UIOptions.canvasActions.export.renderCustomUI` to support Custom UI rendering inside export dialog [#3666](https://github.com/excalidraw/excalidraw/pull/3666).
+- Added prop `UIOptions.canvasActions.saveAsImage` to show/hide the **Save as image** button in the canvas actions. Defauls to `true` hence the **Save as Image** button is rendered [#3662](https://github.com/excalidraw/excalidraw/pull/3662).
+
+- Export dialog can be customised with [`UiOptions.canvasActions.export`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#exportOpts) [#3658](https://github.com/excalidraw/excalidraw/pull/3658).
+
+  Also, [`UIOptions`](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#UIOptions) is now memoized to avoid unnecessary rerenders.
+
+  #### BREAKING CHANGE
+
+  - `UIOptions.canvasActions.saveAsScene` is now renamed to `UiOptions.canvasActions.export.saveFileToDisk`. Defaults to `true` hence the **save file to disk** button is rendered inside the export dialog.
+  - `exportToBackend` is now renamed to `UIOptions.canvasActions.export.exportToBackend`. If this prop is not passed, the **shareable-link** button will not be rendered, same as before.
+
+### Fixes
+
+- Use excalidraw Id in elements so every element has unique id [#3696](https://github.com/excalidraw/excalidraw/pull/3696).
+
+### Refactor
+
+- #### BREAKING CHANGE
+  - Rename `UIOptions.canvasActions.saveScene` to `UIOptions.canvasActions.saveToActiveFile`[#3657](https://github.com/excalidraw/excalidraw/pull/3657).
+  - Removed `shouldAddWatermark: boolean` attribute from options for [export](https://github.com/excalidraw/excalidraw/blob/master/src/packages/excalidraw/README.md#export-utilities) APIs [#3639](https://github.com/excalidraw/excalidraw/pull/3639).
+  - Removed `appState.shouldAddWatermark` so in case you were passing `shouldAddWatermark` in [initialData.AppState](https://github.com/excalidraw/excalidraw/blob/master/src/types.ts#L42) it will not work anymore.
+
 ## 0.8.0 (2021-05-15)
 
 ## Excalidraw API

@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import { trackEvent } from "../analytics";
 import { getDefaultAppState } from "../appState";
-import { ExcalidrawImperativeAPI } from "../components/App";
 import { ErrorDialog } from "../components/ErrorDialog";
 import { TopErrorBoundary } from "../components/TopErrorBoundary";
 import {
@@ -31,7 +30,7 @@ import Excalidraw, {
   defaultLang,
   languages,
 } from "../packages/excalidraw/index";
-import { AppState, LibraryItems } from "../types";
+import { AppState, LibraryItems, ExcalidrawImperativeAPI } from "../types";
 import {
   debounce,
   getVersion,
@@ -56,6 +55,7 @@ import { Tooltip } from "../components/Tooltip";
 import { shield } from "../components/icons";
 
 import "./index.scss";
+import { ExportToExcalidrawPlus } from "./components/ExportToExcalidrawPlus";
 
 const languageDetector = new LanguageDetector();
 languageDetector.init({
@@ -141,7 +141,7 @@ const initializeScene = async (opts: {
     const url = externalUrlMatch[1];
     try {
       const request = await fetch(window.decodeURIComponent(url));
-      const data = await loadFromBlob(await request.blob(), null);
+      const data = await loadFromBlob(await request.blob(), null, null);
       if (
         !scene.elements.length ||
         window.confirm(t("alerts.loadSceneOverridePrompt"))
@@ -340,7 +340,7 @@ const ExcalidrawWrapper = () => {
           rel="noopener noreferrer"
           aria-label={t("encrypted.link")}
         >
-          <Tooltip label={t("encrypted.tooltip")} position="above" long={true}>
+          <Tooltip label={t("encrypted.tooltip")} long={true}>
             {shield}
           </Tooltip>
         </a>
@@ -424,7 +424,28 @@ const ExcalidrawWrapper = () => {
         onCollabButtonClick={collabAPI?.onCollabButtonClick}
         isCollaborating={collabAPI?.isCollaborating()}
         onPointerUpdate={collabAPI?.onPointerUpdate}
-        onExportToBackend={onExportToBackend}
+        UIOptions={{
+          canvasActions: {
+            export: {
+              onExportToBackend,
+              renderCustomUI: (elements, appState) => {
+                return (
+                  <ExportToExcalidrawPlus
+                    elements={elements}
+                    appState={appState}
+                    onError={(error) => {
+                      excalidrawAPI?.updateScene({
+                        appState: {
+                          errorMessage: error.message,
+                        },
+                      });
+                    }}
+                  />
+                );
+              },
+            },
+          },
+        }}
         renderTopRightUI={renderTopRightUI}
         renderFooter={renderFooter}
         langCode={langCode}
@@ -432,6 +453,7 @@ const ExcalidrawWrapper = () => {
         detectScroll={false}
         handleKeyboardGlobally={true}
         onLibraryChange={onLibraryChange}
+        autoFocus={true}
       />
       {excalidrawAPI && <CollabWrapper excalidrawAPI={excalidrawAPI} />}
       {errorMessage && (
