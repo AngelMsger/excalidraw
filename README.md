@@ -1,3 +1,11 @@
+## What's t'he different in this fork
+
+Add simplified Chinese font support.
+
+![Simplified Chinises](public/screenshots/simplified_chinese.png)
+
+# Upstream README.md
+
 <div align="center" style="display:flex;flex-direction:column;">
   <a href="https://excalidraw.com">
     <img width="540" src="./public/og-image-sm.png" alt="Excalidraw logo: Sketch handrawn like diagrams." />
