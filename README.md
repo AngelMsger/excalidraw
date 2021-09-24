@@ -1,4 +1,4 @@
-## What's t'he different in this fork
+## What's the different in this fork
 
 Add simplified Chinese font support.
 
