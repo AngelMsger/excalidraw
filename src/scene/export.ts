@@ -109,8 +109,8 @@ export const exportToSvg = async (
       ).encodeSvgMetadata({
         text: serializeAsJSON(elements, appState, files || {}, "local"),
       });
-    } catch (err) {
-      console.error(err);
+    } catch (error: any) {
+      console.error(error);
     }
   }
   const [minX, minY, width, height] = getCanvasSize(elements, exportPadding);
@@ -158,6 +158,7 @@ export const exportToSvg = async (
   renderSceneToSvg(elements, rsvg, svgRoot, files || {}, {
     offsetX: -minX + exportPadding,
     offsetY: -minY + exportPadding,
+    exportWithDarkMode: appState.exportWithDarkMode,
   });
 
   return svgRoot;
@@ -180,10 +181,9 @@ export const getExportSize = (
   exportPadding: number,
   scale: number,
 ): [number, number] => {
-  const [, , width, height] = getCanvasSize(
-    elements,
-    exportPadding,
-  ).map((dimension) => Math.trunc(dimension * scale));
+  const [, , width, height] = getCanvasSize(elements, exportPadding).map(
+    (dimension) => Math.trunc(dimension * scale),
+  );
 
   return [width, height];
 };

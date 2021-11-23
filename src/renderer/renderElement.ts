@@ -31,6 +31,12 @@ import { getDefaultAppState } from "../appState";
 import { MAX_DECIMALS_FOR_SVG_EXPORT, MIME_TYPES, SVG_NS } from "../constants";
 import { getStroke, StrokeOptions } from "perfect-freehand";
 
+// using a stronger invert (100% vs our regular 93%) and saturate
+// as a temp hack to make images in dark theme look closer to original
+// color scheme (it's still not quite there and the colors look slightly
+// desatured, alas...)
+const IMAGE_INVERT_FILTER = "invert(100%) hue-rotate(180deg) saturate(1.25)";
+
 const defaultAppState = getDefaultAppState();
 
 const isPendingImageElement = (
@@ -116,17 +122,14 @@ const generateElementCanvas = (
 
   const rc = rough.canvas(canvas);
 
+  // in dark theme, revert the image color filter
   if (
     sceneState.theme === "dark" &&
     isInitializedImageElement(element) &&
     !isPendingImageElement(element, sceneState) &&
     sceneState.imageCache.get(element.fileId)?.mimeType !== MIME_TYPES.svg
   ) {
-    // using a stronger invert (100% vs our regular 93%) and saturate
-    // as a temp hack to make images in dark theme look closer to original
-    // color scheme (it's still not quite there and the clors look slightly
-    // desaturing/black is not as black, but...)
-    context.filter = "invert(100%) hue-rotate(180deg) saturate(1.25)";
+    context.filter = IMAGE_INVERT_FILTER;
   }
 
   drawElementOnCanvas(element, rc, context, sceneState);
@@ -323,12 +326,13 @@ export const generateRoughOptions = (
     roughness: element.roughness,
     stroke: element.strokeColor,
     preserveVertices: continuousPath,
+    // disable decimals to fix Skia rendering issues #4046
+    fixedDecimalPlaceDigits: 0,
   };
 
   switch (element.type) {
     case "rectangle":
     case "diamond":
-    case "image":
     case "ellipse": {
       options.fillStyle = element.fillStyle;
       options.fill =
@@ -398,16 +402,8 @@ const generateElementShape = (
         }
         break;
       case "diamond": {
-        const [
-          topX,
-          topY,
-          rightX,
-          rightY,
-          bottomX,
-          bottomY,
-          leftX,
-          leftY,
-        ] = getDiamondPoints(element);
+        const [topX, topY, rightX, rightY, bottomX, bottomY, leftX, leftY] =
+          getDiamondPoints(element);
         shape = generator.polygon(
           [
             [topX, topY],
@@ -482,6 +478,29 @@ const generateElementShape = (
                   fillStyle: "solid",
                   stroke: "none",
                 }),
+              ];
+            }
+
+            if (arrowhead === "triangle") {
+              const [x, y, x2, y2, x3, y3] = arrowheadPoints;
+
+              // always use solid stroke for triangle arrowhead
+              delete options.strokeLineDash;
+
+              return [
+                generator.polygon(
+                  [
+                    [x, y],
+                    [x2, y2],
+                    [x3, y3],
+                    [x, y],
+                  ],
+                  {
+                    ...options,
+                    fill: element.strokeColor,
+                    fillStyle: "solid",
+                  },
+                ),
               ];
             }
 
@@ -728,6 +747,7 @@ export const renderElementToSvg = (
   files: BinaryFiles,
   offsetX?: number,
   offsetY?: number,
+  exportWithDarkMode?: boolean,
 ) => {
   const [x1, y1, x2, y2] = getElementAbsoluteCoords(element);
   const cx = (x2 - x1) / 2 - (element.x - x1);
@@ -844,6 +864,11 @@ export const renderElementToSvg = (
 
         const use = svgRoot.ownerDocument!.createElementNS(SVG_NS, "use");
         use.setAttribute("href", `#${symbolId}`);
+
+        // in dark theme, revert the image color filter
+        if (exportWithDarkMode && fileData.mimeType !== MIME_TYPES.svg) {
+          use.setAttribute("filter", IMAGE_INVERT_FILTER);
+        }
 
         use.setAttribute("width", `${Math.round(element.width)}`);
         use.setAttribute("height", `${Math.round(element.height)}`);

@@ -3,7 +3,12 @@ import {
   ExcalidrawSelectionElement,
   FontFamilyValues,
 } from "../element/types";
-import { AppState, BinaryFiles, NormalizedZoomValue } from "../types";
+import {
+  AppState,
+  BinaryFiles,
+  LibraryItem,
+  NormalizedZoomValue,
+} from "../types";
 import { ImportedDataState } from "./types";
 import {
   getElementMap,
@@ -59,7 +64,7 @@ const getFontFamilyByName = (fontFamilyName: string): FontFamilyValues => {
 
 const restoreElementWithProperties = <
   T extends ExcalidrawElement,
-  K extends Pick<T, keyof Omit<Required<T>, keyof ExcalidrawElement>>
+  K extends Pick<T, keyof Omit<Required<T>, keyof ExcalidrawElement>>,
 >(
   element: Required<T>,
   extra: Pick<
@@ -98,11 +103,11 @@ const restoreElementWithProperties = <
     boundElementIds: element.boundElementIds ?? [],
   };
 
-  return ({
+  return {
     ...base,
     ...getNormalizedDimensions(base),
     ...extra,
-  } as unknown) as T;
+  } as unknown as T;
 };
 
 const restoreElement = (
@@ -113,10 +118,9 @@ const restoreElement = (
       let fontSize = element.fontSize;
       let fontFamily = element.fontFamily;
       if ("font" in element) {
-        const [fontPx, _fontFamily]: [
-          string,
-          string,
-        ] = (element as any).font.split(" ");
+        const [fontPx, _fontFamily]: [string, string] = (
+          element as any
+        ).font.split(" ");
         fontSize = parseInt(fontPx, 10);
         fontFamily = getFontFamilyByName(_fontFamily);
       }
@@ -273,4 +277,31 @@ export const restore = (
     appState: restoreAppState(data?.appState, localAppState || null),
     files: data?.files || {},
   };
+};
+
+export const restoreLibraryItems = (
+  libraryItems: NonOptional<ImportedDataState["libraryItems"]>,
+  defaultStatus: LibraryItem["status"],
+) => {
+  const restoredItems: LibraryItem[] = [];
+  for (const item of libraryItems) {
+    // migrate older libraries
+    if (Array.isArray(item)) {
+      restoredItems.push({
+        status: defaultStatus,
+        elements: item,
+        id: randomId(),
+        created: Date.now(),
+      });
+    } else {
+      const _item = item as MarkOptional<LibraryItem, "id" | "status">;
+      restoredItems.push({
+        ..._item,
+        id: _item.id || randomId(),
+        status: _item.status || defaultStatus,
+        created: _item.created || Date.now(),
+      });
+    }
+  }
+  return restoredItems;
 };
