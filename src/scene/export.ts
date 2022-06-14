@@ -51,34 +51,23 @@ export const exportToCanvas = async (
     files,
   });
 
-  renderScene(
-    elements,
-    appState,
-    null,
-    scale,
-    rough.canvas(canvas),
-    canvas,
-    {
-      viewBackgroundColor: exportBackground ? viewBackgroundColor : null,
-      scrollX: -minX + exportPadding,
-      scrollY: -minY + exportPadding,
-      zoom: defaultAppState.zoom,
-      remotePointerViewportCoords: {},
-      remoteSelectedElementIds: {},
-      shouldCacheIgnoreZoom: false,
-      remotePointerUsernames: {},
-      remotePointerUserStates: {},
-      theme: appState.exportWithDarkMode ? "dark" : "light",
-      imageCache,
-    },
-    {
-      renderScrollbars: false,
-      renderSelection: false,
-      renderOptimizations: true,
-      renderGrid: false,
-      isExport: true,
-    },
-  );
+  renderScene(elements, appState, null, scale, rough.canvas(canvas), canvas, {
+    viewBackgroundColor: exportBackground ? viewBackgroundColor : null,
+    scrollX: -minX + exportPadding,
+    scrollY: -minY + exportPadding,
+    zoom: defaultAppState.zoom,
+    remotePointerViewportCoords: {},
+    remoteSelectedElementIds: {},
+    shouldCacheIgnoreZoom: false,
+    remotePointerUsernames: {},
+    remotePointerUserStates: {},
+    theme: appState.exportWithDarkMode ? "dark" : "light",
+    imageCache,
+    renderScrollbars: false,
+    renderSelection: false,
+    renderGrid: false,
+    isExporting: true,
+  });
 
   return canvas;
 };
@@ -115,7 +104,7 @@ export const exportToSvg = async (
   }
   const [minX, minY, width, height] = getCanvasSize(elements, exportPadding);
 
-  // initialze SVG root
+  // initialize SVG root
   const svgRoot = document.createElementNS(SVG_NS, "svg");
   svgRoot.setAttribute("version", "1.1");
   svgRoot.setAttribute("xmlns", SVG_NS);
@@ -126,6 +115,19 @@ export const exportToSvg = async (
     svgRoot.setAttribute("filter", THEME_FILTER);
   }
 
+  let assetPath = "https://excalidraw.com/";
+
+  // Asset path needs to be determined only when using package
+  if (process.env.IS_EXCALIDRAW_NPM_PACKAGE) {
+    assetPath =
+      window.EXCALIDRAW_ASSET_PATH ||
+      `https://unpkg.com/${process.env.PKG_NAME}@${process.env.PKG_VERSION}`;
+
+    if (assetPath?.startsWith("/")) {
+      assetPath = assetPath.replace("/", `${window.location.origin}/`);
+    }
+    assetPath = `${assetPath}/dist/excalidraw-assets/`;
+  }
   svgRoot.innerHTML = `
   ${SVG_EXPORT_TAG}
   ${metadata}
@@ -133,16 +135,15 @@ export const exportToSvg = async (
     <style>
       @font-face {
         font-family: "Virgil";
-        src: url("https://excalidraw.com/Virgil.woff2");
+        src: url("${assetPath}Virgil.woff2");
       }
       @font-face {
         font-family: "Cascadia";
-        src: url("https://excalidraw.com/Cascadia.woff2");
+        src: url("${assetPath}Cascadia.woff2");
       }
     </style>
   </defs>
   `;
-
   // render background rect
   if (appState.exportBackground && viewBackgroundColor) {
     const rect = svgRoot.ownerDocument!.createElementNS(SVG_NS, "rect");

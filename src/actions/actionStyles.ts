@@ -6,18 +6,20 @@ import {
 import { CODES, KEYS } from "../keys";
 import { t } from "../i18n";
 import { register } from "./register";
-import { mutateElement, newElementWith } from "../element/mutateElement";
+import { newElementWith } from "../element/mutateElement";
 import {
   DEFAULT_FONT_SIZE,
   DEFAULT_FONT_FAMILY,
   DEFAULT_TEXT_ALIGN,
 } from "../constants";
+import { getContainerElement } from "../element/textElement";
 
 // `copiedStyles` is exported only for tests.
 export let copiedStyles: string = "{}";
 
 export const actionCopyStyles = register({
   name: "copyStyles",
+  trackEvent: { category: "element" },
   perform: (elements, appState) => {
     const element = elements.find((el) => appState.selectedElementIds[el.id]);
     if (element) {
@@ -38,6 +40,7 @@ export const actionCopyStyles = register({
 
 export const actionPasteStyles = register({
   name: "pasteStyles",
+  trackEvent: { category: "element" },
   perform: (elements, appState) => {
     const pastedElement = JSON.parse(copiedStyles);
     if (!isExcalidrawElement(pastedElement)) {
@@ -46,7 +49,7 @@ export const actionPasteStyles = register({
     return {
       elements: elements.map((element) => {
         if (appState.selectedElementIds[element.id]) {
-          const newElement = newElementWith(element, {
+          let newElement = newElementWith(element, {
             backgroundColor: pastedElement?.backgroundColor,
             strokeWidth: pastedElement?.strokeWidth,
             strokeColor: pastedElement?.strokeColor,
@@ -55,14 +58,24 @@ export const actionPasteStyles = register({
             opacity: pastedElement?.opacity,
             roughness: pastedElement?.roughness,
           });
+
           if (isTextElement(newElement)) {
-            mutateElement(newElement, {
+            newElement = newElementWith(newElement, {
               fontSize: pastedElement?.fontSize || DEFAULT_FONT_SIZE,
               fontFamily: pastedElement?.fontFamily || DEFAULT_FONT_FAMILY,
               textAlign: pastedElement?.textAlign || DEFAULT_TEXT_ALIGN,
             });
-            redrawTextBoundingBox(newElement);
+
+            redrawTextBoundingBox(newElement, getContainerElement(newElement));
           }
+
+          if (newElement.type === "arrow") {
+            newElement = newElementWith(newElement, {
+              startArrowhead: pastedElement.startArrowhead,
+              endArrowhead: pastedElement.endArrowhead,
+            });
+          }
+
           return newElement;
         }
         return element;

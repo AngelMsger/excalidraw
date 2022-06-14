@@ -24,7 +24,7 @@ export const POINTER_BUTTON = {
   WHEEL: 1,
   SECONDARY: 2,
   TOUCH: -1,
-};
+} as const;
 
 export enum EVENT {
   COPY = "copy",
@@ -52,6 +52,8 @@ export enum EVENT {
   HASHCHANGE = "hashchange",
   VISIBILITY_CHANGE = "visibilitychange",
   SCROLL = "scroll",
+  // custom events
+  EXCALIDRAW_LINK = "excalidraw-link",
 }
 
 export const ENV = {
@@ -93,7 +95,9 @@ export const MIME_TYPES = {
   excalidrawlib: "application/vnd.excalidrawlib+json",
   json: "application/json",
   svg: "image/svg+xml",
+  "excalidraw.svg": "image/svg+xml",
   png: "image/png",
+  "excalidraw.png": "image/png",
   jpg: "image/jpeg",
   gif: "image/gif",
   binary: "application/octet-stream",
@@ -105,11 +109,8 @@ export const EXPORT_DATA_TYPES = {
   excalidrawLibrary: "excalidrawlib",
 } as const;
 
-export const EXPORT_SOURCE = window.location.origin;
-
-export const STORAGE_KEYS = {
-  LOCAL_STORAGE_LIBRARY: "excalidraw-library",
-} as const;
+export const EXPORT_SOURCE =
+  window.EXCALIDRAW_EXPORT_SOURCE || window.location.origin;
 
 // time in milliseconds
 export const IMAGE_RENDER_TIMEOUT = 500;
@@ -120,6 +121,7 @@ export const TOAST_TIMEOUT = 5000;
 export const VERSION_TIMEOUT = 30000;
 export const SCROLL_TIMEOUT = 100;
 export const ZOOM_STEP = 0.1;
+export const HYPERLINK_TOOLTIP_DELAY = 300;
 
 // Report a user inactive after IDLE_THRESHOLD milliseconds
 export const IDLE_THRESHOLD = 60_000;
@@ -177,3 +179,22 @@ export const MAX_ALLOWED_FILE_BYTES = 2 * 1024 * 1024;
 export const SVG_NS = "http://www.w3.org/2000/svg";
 
 export const ENCRYPTION_KEY_BITS = 128;
+
+export const VERSIONS = {
+  excalidraw: 2,
+  excalidrawLibrary: 2,
+} as const;
+
+export const BOUND_TEXT_PADDING = 5;
+
+export const VERTICAL_ALIGN = {
+  TOP: "top",
+  MIDDLE: "middle",
+  BOTTOM: "bottom",
+};
+
+export const ELEMENT_READY_TO_ERASE_OPACITY = 20;
+
+export const COOKIES = {
+  AUTH_STATE_COOKIE: "excplus-auth",
+} as const;

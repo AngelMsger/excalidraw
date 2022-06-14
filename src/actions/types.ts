@@ -8,6 +8,8 @@ import {
 } from "../types";
 import { ToolButtonSize } from "../components/ToolButton";
 
+export type ActionSource = "ui" | "keyboard" | "contextMenu" | "api";
+
 /** if false, the action should be prevented */
 export type ActionResult =
   | {
@@ -39,6 +41,7 @@ export type ActionName =
   | "paste"
   | "copyAsPng"
   | "copyAsSvg"
+  | "copyText"
   | "sendBackward"
   | "bringForward"
   | "sendToBack"
@@ -82,6 +85,7 @@ export type ActionName =
   | "zoomToSelection"
   | "changeFontFamily"
   | "changeTextAlign"
+  | "changeVerticalAlign"
   | "toggleFullScreen"
   | "toggleShortcuts"
   | "group"
@@ -101,7 +105,14 @@ export type ActionName =
   | "flipVertical"
   | "viewMode"
   | "exportWithDarkMode"
-  | "toggleTheme";
+  | "toggleTheme"
+  | "increaseFontSize"
+  | "decreaseFontSize"
+  | "unbindText"
+  | "hyperlink"
+  | "eraser"
+  | "bindText"
+  | "toggleLock";
 
 export type PanelComponentProps = {
   elements: readonly ExcalidrawElement[];
@@ -121,18 +132,34 @@ export interface Action {
     appState: AppState,
     elements: readonly ExcalidrawElement[],
   ) => boolean;
-  contextItemLabel?: string;
+  contextItemLabel?:
+    | string
+    | ((
+        elements: readonly ExcalidrawElement[],
+        appState: Readonly<AppState>,
+      ) => string);
   contextItemPredicate?: (
     elements: readonly ExcalidrawElement[],
     appState: AppState,
   ) => boolean;
   checked?: (appState: Readonly<AppState>) => boolean;
-}
-
-export interface ActionsManagerInterface {
-  actions: Record<ActionName, Action>;
-  registerAction: (action: Action) => void;
-  handleKeyDown: (event: React.KeyboardEvent | KeyboardEvent) => boolean;
-  renderAction: (name: ActionName) => React.ReactElement | null;
-  executeAction: (action: Action) => void;
+  trackEvent:
+    | false
+    | {
+        category:
+          | "toolbar"
+          | "element"
+          | "canvas"
+          | "export"
+          | "history"
+          | "menu"
+          | "collab"
+          | "hyperlink";
+        action?: string;
+        predicate?: (
+          appState: Readonly<AppState>,
+          elements: readonly ExcalidrawElement[],
+          value: any,
+        ) => boolean;
+      };
 }

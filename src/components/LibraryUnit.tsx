@@ -1,19 +1,21 @@
 import clsx from "clsx";
 import oc from "open-color";
 import { useEffect, useRef, useState } from "react";
-import { MIME_TYPES } from "../constants";
-import { useIsMobile } from "../components/App";
+import { useDeviceType } from "../components/App";
 import { exportToSvg } from "../scene/export";
 import { BinaryFiles, LibraryItem } from "../types";
 import "./LibraryUnit.scss";
 import { CheckboxItem } from "./CheckboxItem";
 
-// fa-plus
 const PLUS_ICON = (
   <svg viewBox="0 0 1792 1792">
     <path
-      fill="currentColor"
-      d="M1600 736v192q0 40-28 68t-68 28h-416v416q0 40-28 68t-68 28h-192q-40 0-68-28t-28-68v-416h-416q-40 0-68-28t-28-68v-192q0-40 28-68t68-28h416v-416q0-40 28-68t68-28h192q40 0 68 28t28 68v416h416q40 0 68 28t28 68z"
+      d="M1600 736v192c0 26.667-9.33 49.333-28 68-18.67 18.67-41.33 28-68 28h-416v416c0 26.67-9.33 49.33-28 68s-41.33 28-68 28H800c-26.667 0-49.333-9.33-68-28s-28-41.33-28-68v-416H288c-26.667 0-49.333-9.33-68-28-18.667-18.667-28-41.333-28-68V736c0-26.667 9.333-49.333 28-68s41.333-28 68-28h416V224c0-26.667 9.333-49.333 28-68s41.333-28 68-28h192c26.67 0 49.33 9.333 68 28s28 41.333 28 68v416h416c26.67 0 49.33 9.333 68 28s28 41.333 28 68Z"
+      style={{
+        stroke: "#fff",
+        strokeWidth: 140,
+      }}
+      transform="translate(0 64)"
     />
   </svg>
 );
@@ -26,6 +28,7 @@ export const LibraryUnit = ({
   onClick,
   selected,
   onToggle,
+  onDrag,
 }: {
   id: LibraryItem["id"] | /** for pending item */ null;
   elements?: LibraryItem["elements"];
@@ -33,7 +36,8 @@ export const LibraryUnit = ({
   isPending?: boolean;
   onClick: () => void;
   selected: boolean;
-  onToggle: (id: string) => void;
+  onToggle: (id: string, event: React.MouseEvent) => void;
+  onDrag: (id: string, event: React.DragEvent) => void;
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -63,7 +67,7 @@ export const LibraryUnit = ({
   }, [elements, files]);
 
   const [isHovered, setIsHovered] = useState(false);
-  const isMobile = useIsMobile();
+  const isMobile = useDeviceType().isMobile;
   const adder = isPending && (
     <div className="library-unit__adder">{PLUS_ICON}</div>
   );
@@ -84,20 +88,31 @@ export const LibraryUnit = ({
         })}
         ref={ref}
         draggable={!!elements}
-        onClick={!!elements || !!isPending ? onClick : undefined}
+        onClick={
+          !!elements || !!isPending
+            ? (event) => {
+                if (id && event.shiftKey) {
+                  onToggle(id, event);
+                } else {
+                  onClick();
+                }
+              }
+            : undefined
+        }
         onDragStart={(event) => {
+          if (!id) {
+            event.preventDefault();
+            return;
+          }
           setIsHovered(false);
-          event.dataTransfer.setData(
-            MIME_TYPES.excalidrawlib,
-            JSON.stringify(elements),
-          );
+          onDrag(id, event);
         }}
       />
       {adder}
       {id && elements && (isHovered || isMobile || selected) && (
         <CheckboxItem
           checked={selected}
-          onChange={() => onToggle(id)}
+          onChange={(checked, event) => onToggle(id, event)}
           className="library-unit__checkbox"
         />
       )}

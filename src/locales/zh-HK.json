@@ -9,6 +9,7 @@
     "copy": "複製",
     "copyAsPng": "以 PNG 格式複製",
     "copyAsSvg": "以 SVG 格式複製",
+    "copyText": "",
     "bringForward": "往上一層移動",
     "sendToBack": "移到最底層",
     "bringToFront": "移到最上層",
@@ -64,6 +65,7 @@
     "cartoonist": "卡通風格",
     "fileTitle": "檔案名稱",
     "colorPicker": "",
+    "canvasColors": "",
     "canvasBackground": "畫布背景顏色",
     "drawingCanvas": "畫布",
     "layers": "圖層",
@@ -100,7 +102,25 @@
     "share": "",
     "showStroke": "",
     "showBackground": "",
-    "toggleTheme": ""
+    "toggleTheme": "",
+    "personalLib": "",
+    "excalidrawLib": "",
+    "decreaseFontSize": "",
+    "increaseFontSize": "",
+    "unbindText": "",
+    "bindText": "",
+    "link": {
+      "edit": "",
+      "create": "",
+      "label": ""
+    },
+    "elementLock": {
+      "lock": "",
+      "unlock": "",
+      "lockAll": "",
+      "unlockAll": ""
+    },
+    "statusPublished": ""
   },
   "buttons": {
     "clearReset": "清空畫布",
@@ -135,7 +155,11 @@
     "zenMode": "",
     "exitZenMode": "",
     "cancel": "",
-    "clear": ""
+    "clear": "",
+    "remove": "",
+    "publishLibrary": "",
+    "submit": "",
+    "confirm": ""
   },
   "alerts": {
     "clearReset": "【‼️ 警告 ‼️ 無法復原的動作】你確定要清空呢塊畫布嗎？",
@@ -149,7 +173,6 @@
     "uploadedSecurly": "",
     "loadSceneOverridePrompt": "",
     "collabStopOverridePrompt": "",
-    "errorLoadingLibrary": "",
     "errorAddingToLibrary": "",
     "errorRemovingFromLibrary": "",
     "confirmAddLibrary": "",
@@ -157,6 +180,7 @@
     "cannotRestoreFromImage": "",
     "invalidSceneUrl": "",
     "resetLibrary": "",
+    "removeItemsFromsLibrary": "",
     "invalidEncryptionKey": ""
   },
   "errors": {
@@ -164,7 +188,9 @@
     "imageInsertError": "",
     "fileTooBig": "",
     "svgImageInsertError": "",
-    "invalidSVGString": ""
+    "invalidSVGString": "",
+    "cannotResolveCollabServer": "",
+    "importLibraryError": ""
   },
   "toolBar": {
     "selection": "",
@@ -177,7 +203,10 @@
     "freedraw": "",
     "text": "",
     "library": "",
-    "lock": ""
+    "lock": "",
+    "penMode": "",
+    "link": "",
+    "eraser": ""
   },
   "headings": {
     "canvasActions": "畫布動作",
@@ -199,7 +228,11 @@
     "lineEditor_info": "",
     "lineEditor_pointSelected": "",
     "lineEditor_nothingSelected": "",
-    "placeImage": ""
+    "placeImage": "",
+    "publishLibrary": "",
+    "bindTextToElement": "",
+    "deepBoxSelect": "",
+    "eraserRevert": ""
   },
   "canvasError": {
     "cannotShowPreview": "無法顯示預覽",
@@ -246,6 +279,8 @@
   "helpDialog": {
     "blog": "",
     "click": "",
+    "deepSelect": "",
+    "deepBoxSelect": "",
     "curvedArrow": "",
     "curvedLine": "",
     "documentation": "",
@@ -257,17 +292,67 @@
     "howto": "",
     "or": "",
     "preventBinding": "",
-    "shapes": "",
+    "tools": "",
     "shortcuts": "",
     "textFinish": "",
     "textNewLine": "",
     "title": "",
     "view": "",
     "zoomToFit": "",
-    "zoomToSelection": ""
+    "zoomToSelection": "",
+    "toggleElementLock": ""
   },
   "clearCanvasDialog": {
     "title": ""
+  },
+  "publishDialog": {
+    "title": "",
+    "itemName": "",
+    "authorName": "",
+    "githubUsername": "",
+    "twitterUsername": "",
+    "libraryName": "",
+    "libraryDesc": "",
+    "website": "",
+    "placeholder": {
+      "authorName": "",
+      "libraryName": "",
+      "libraryDesc": "",
+      "githubHandle": "",
+      "twitterHandle": "",
+      "website": ""
+    },
+    "errors": {
+      "required": "",
+      "website": ""
+    },
+    "noteDescription": {
+      "pre": "",
+      "link": "",
+      "post": ""
+    },
+    "noteGuidelines": {
+      "pre": "",
+      "link": "",
+      "post": ""
+    },
+    "noteLicense": {
+      "pre": "",
+      "link": "",
+      "post": ""
+    },
+    "noteItems": "",
+    "atleastOneLibItem": "",
+    "republishWarning": ""
+  },
+  "publishSuccessDialog": {
+    "title": "",
+    "content": "",
+    "link": ""
+  },
+  "confirmDialog": {
+    "resetLibrary": "",
+    "removeItemsFromLib": ""
   },
   "encrypted": {
     "tooltip": "",
@@ -289,6 +374,7 @@
     "width": ""
   },
   "toast": {
+    "addedToLibrary": "",
     "copyStyles": "",
     "copyToClipboard": "",
     "copyToClipboardAsPng": "",

@@ -9,6 +9,7 @@
     "copy": "Көшіру",
     "copyAsPng": "",
     "copyAsSvg": "",
+    "copyText": "",
     "bringForward": "",
     "sendToBack": "",
     "bringToFront": "",
@@ -64,6 +65,7 @@
     "cartoonist": "",
     "fileTitle": "Файл атауы",
     "colorPicker": "",
+    "canvasColors": "",
     "canvasBackground": "",
     "drawingCanvas": "",
     "layers": "",
@@ -100,7 +102,25 @@
     "share": "",
     "showStroke": "",
     "showBackground": "",
-    "toggleTheme": ""
+    "toggleTheme": "",
+    "personalLib": "",
+    "excalidrawLib": "",
+    "decreaseFontSize": "",
+    "increaseFontSize": "",
+    "unbindText": "",
+    "bindText": "",
+    "link": {
+      "edit": "",
+      "create": "",
+      "label": ""
+    },
+    "elementLock": {
+      "lock": "",
+      "unlock": "",
+      "lockAll": "",
+      "unlockAll": ""
+    },
+    "statusPublished": ""
   },
   "buttons": {
     "clearReset": "",
@@ -135,7 +155,11 @@
     "zenMode": "",
     "exitZenMode": "",
     "cancel": "",
-    "clear": ""
+    "clear": "",
+    "remove": "",
+    "publishLibrary": "",
+    "submit": "",
+    "confirm": ""
   },
   "alerts": {
     "clearReset": "",
@@ -149,7 +173,6 @@
     "uploadedSecurly": "",
     "loadSceneOverridePrompt": "",
     "collabStopOverridePrompt": "",
-    "errorLoadingLibrary": "",
     "errorAddingToLibrary": "",
     "errorRemovingFromLibrary": "",
     "confirmAddLibrary": "",
@@ -157,6 +180,7 @@
     "cannotRestoreFromImage": "",
     "invalidSceneUrl": "",
     "resetLibrary": "",
+    "removeItemsFromsLibrary": "",
     "invalidEncryptionKey": ""
   },
   "errors": {
@@ -164,7 +188,9 @@
     "imageInsertError": "Суретті жүктеу мүмкін болмады. Кейінірек қайталап көріңіз...",
     "fileTooBig": "Файл өте үлкен. Максималды рұқсат етілген көлем {{maxSize}}.",
     "svgImageInsertError": "",
-    "invalidSVGString": ""
+    "invalidSVGString": "",
+    "cannotResolveCollabServer": "",
+    "importLibraryError": ""
   },
   "toolBar": {
     "selection": "",
@@ -177,7 +203,10 @@
     "freedraw": "",
     "text": "Мәтін",
     "library": "",
-    "lock": ""
+    "lock": "",
+    "penMode": "",
+    "link": "",
+    "eraser": ""
   },
   "headings": {
     "canvasActions": "",
@@ -199,7 +228,11 @@
     "lineEditor_info": "",
     "lineEditor_pointSelected": "",
     "lineEditor_nothingSelected": "",
-    "placeImage": ""
+    "placeImage": "",
+    "publishLibrary": "",
+    "bindTextToElement": "",
+    "deepBoxSelect": "",
+    "eraserRevert": ""
   },
   "canvasError": {
     "cannotShowPreview": "",
@@ -246,6 +279,8 @@
   "helpDialog": {
     "blog": "Біздің блогты оқу",
     "click": "шерту",
+    "deepSelect": "",
+    "deepBoxSelect": "",
     "curvedArrow": "Майысқан нұсқар",
     "curvedLine": "Майысқан сызық",
     "documentation": "Құжаттама",
@@ -257,17 +292,67 @@
     "howto": "Біздің нұсқаулықтарды орындаңыз",
     "or": "немесе",
     "preventBinding": "Нұсқарды байланыстыруға жол бермеу",
-    "shapes": "Пішіндер",
+    "tools": "",
     "shortcuts": "Пернетақта пәрмендері",
     "textFinish": "Өңдеуді аяқтау (мәтіндік редактор)",
     "textNewLine": "Жаңа жолға көшу (мәтіндік редактор)",
     "title": "Көмек",
     "view": "Көру",
     "zoomToFit": "Барлық элементтердің көлеміне сәйкес үлкейту",
-    "zoomToSelection": "Таңдалғанды үлкейту"
+    "zoomToSelection": "Таңдалғанды үлкейту",
+    "toggleElementLock": ""
   },
   "clearCanvasDialog": {
     "title": ""
+  },
+  "publishDialog": {
+    "title": "",
+    "itemName": "",
+    "authorName": "",
+    "githubUsername": "",
+    "twitterUsername": "",
+    "libraryName": "",
+    "libraryDesc": "",
+    "website": "",
+    "placeholder": {
+      "authorName": "",
+      "libraryName": "",
+      "libraryDesc": "",
+      "githubHandle": "",
+      "twitterHandle": "",
+      "website": ""
+    },
+    "errors": {
+      "required": "",
+      "website": ""
+    },
+    "noteDescription": {
+      "pre": "",
+      "link": "",
+      "post": ""
+    },
+    "noteGuidelines": {
+      "pre": "",
+      "link": "",
+      "post": ""
+    },
+    "noteLicense": {
+      "pre": "",
+      "link": "",
+      "post": ""
+    },
+    "noteItems": "",
+    "atleastOneLibItem": "",
+    "republishWarning": ""
+  },
+  "publishSuccessDialog": {
+    "title": "",
+    "content": "",
+    "link": ""
+  },
+  "confirmDialog": {
+    "resetLibrary": "",
+    "removeItemsFromLib": ""
   },
   "encrypted": {
     "tooltip": "Сіздің сызбаларыңыз өтпелі шифрлеу арқылы шифрланған, сондықтан Excalidraw серверлері оларды ешқашан көрмейді.",
@@ -289,6 +374,7 @@
     "width": "Ені"
   },
   "toast": {
+    "addedToLibrary": "",
     "copyStyles": "Стильдер көшірілді.",
     "copyToClipboard": "",
     "copyToClipboardAsPng": "",

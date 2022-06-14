@@ -1,6 +1,12 @@
 import { ExcalidrawElement } from "../element/types";
-import { AppState, BinaryFiles, LibraryItems, LibraryItems_v1 } from "../types";
+import {
+  AppState,
+  BinaryFiles,
+  LibraryItems,
+  LibraryItems_anyVersion,
+} from "../types";
 import type { cleanAppStateForExport } from "../appState";
+import { VERSIONS } from "../constants";
 
 export interface ExportedDataState {
   type: string;
@@ -18,13 +24,13 @@ export interface ImportedDataState {
   elements?: readonly ExcalidrawElement[] | null;
   appState?: Readonly<Partial<AppState>> | null;
   scrollToContent?: boolean;
-  libraryItems?: LibraryItems | LibraryItems_v1;
+  libraryItems?: LibraryItems_anyVersion;
   files?: BinaryFiles;
 }
 
 export interface ExportedLibraryData {
   type: string;
-  version: 2;
+  version: typeof VERSIONS.excalidrawLibrary;
   source: string;
   libraryItems: LibraryItems;
 }

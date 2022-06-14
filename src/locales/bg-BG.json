@@ -9,6 +9,7 @@
     "copy": "Копирай",
     "copyAsPng": "Копиране в клипборда",
     "copyAsSvg": "Копирано в клипборда като SVG",
+    "copyText": "",
     "bringForward": "Преместване напред",
     "sendToBack": "Изнасяне назад",
     "bringToFront": "Изнасяне отпред",
@@ -35,11 +36,11 @@
     "arrowhead_arrow": "Стрелка",
     "arrowhead_bar": "Връх на стрелката",
     "arrowhead_dot": "Точка",
-    "arrowhead_triangle": "",
+    "arrowhead_triangle": "Триъгълник",
     "fontSize": "Размер на шрифта",
     "fontFamily": "Семейство шрифтове",
     "onlySelected": "Само избраното",
-    "withBackground": "",
+    "withBackground": "Фон",
     "exportEmbedScene": "",
     "exportEmbedScene_details": "Данните от сцената ще бъдат екпортирани в PNG/SVG файл, за да може сцената да бъде възстановена от него.\nТова ще увеличи размера на файла.",
     "addWatermark": "Добави \"Направено с Excalidraw\"",
@@ -62,8 +63,9 @@
     "architect": "Архитект",
     "artist": "Художник",
     "cartoonist": "Карикатурист",
-    "fileTitle": "",
+    "fileTitle": "Име на файл",
     "colorPicker": "Избор на цвят",
+    "canvasColors": "",
     "canvasBackground": "Фон на платно",
     "drawingCanvas": "Платно за рисуване",
     "layers": "Слоеве",
@@ -93,19 +95,37 @@
     "centerHorizontally": "Центрирай хоризонтално",
     "distributeHorizontally": "Разпредели хоризонтално",
     "distributeVertically": "Разпредели вертикално",
-    "flipHorizontal": "",
-    "flipVertical": "",
+    "flipHorizontal": "Хоризонтално обръщане",
+    "flipVertical": "Вертикално обръщане",
     "viewMode": "Изглед",
     "toggleExportColorScheme": "",
-    "share": "",
+    "share": "Сподели",
     "showStroke": "",
     "showBackground": "",
-    "toggleTheme": ""
+    "toggleTheme": "",
+    "personalLib": "",
+    "excalidrawLib": "",
+    "decreaseFontSize": "",
+    "increaseFontSize": "",
+    "unbindText": "",
+    "bindText": "",
+    "link": {
+      "edit": "",
+      "create": "",
+      "label": ""
+    },
+    "elementLock": {
+      "lock": "",
+      "unlock": "",
+      "lockAll": "",
+      "unlockAll": ""
+    },
+    "statusPublished": ""
   },
   "buttons": {
     "clearReset": "Нулиране на платно",
     "exportJSON": "",
-    "exportImage": "",
+    "exportImage": "Запиши като изображение",
     "export": "Експортиране",
     "exportToPng": "Изнасяне в PNG",
     "exportToSvg": "Изнасяне в SVG",
@@ -127,15 +147,19 @@
     "edit": "Редактиране",
     "undo": "Отмяна",
     "redo": "Повтори",
-    "resetLibrary": "",
+    "resetLibrary": "Нулиране на библиотеката",
     "createNewRoom": "Създай нова стая",
     "fullScreen": "На цял екран",
     "darkMode": "Тъмен режим",
     "lightMode": "Светъл режим",
     "zenMode": "Режим Zen",
     "exitZenMode": "Спиране на Zen режим",
-    "cancel": "",
-    "clear": ""
+    "cancel": "Отмени",
+    "clear": "Изчисти",
+    "remove": "Премахване",
+    "publishLibrary": "Публикувай",
+    "submit": "Изпрати",
+    "confirm": "Потвърждаване"
   },
   "alerts": {
     "clearReset": "Това ще изчисти цялото платно. Сигурни ли сте?",
@@ -144,12 +168,11 @@
     "couldNotLoadInvalidFile": "Невалиден файл не може да се зареди",
     "importBackendFailed": "Импортирането от бекенд не беше успешно.",
     "cannotExportEmptyCanvas": "Не може да се експортира празно платно.",
-    "couldNotCopyToClipboard": "Неуспешно копиране в клипборда. Опитайте да използвате браузъра Chrome.",
+    "couldNotCopyToClipboard": "",
     "decryptFailed": "Данните не можаха да се дешифрират.",
     "uploadedSecurly": "Качването е защитено с криптиране от край до край, което означава, че сървърът Excalidraw и трети страни не могат да четат съдържанието.",
     "loadSceneOverridePrompt": "Зареждането на външна рисунка ще презапише настоящото ви съдържание. Желаете ли да продължите?",
     "collabStopOverridePrompt": "Прекратяването на сесията ще презапише предишната, локално запазена, рисунка. Сигурни ли сте?\n\n(Ако искате да продължите с локалната рисунка, просто затворете таба на браузъра.)",
-    "errorLoadingLibrary": "Възникна грешка при зареждането на външна библиотека.",
     "errorAddingToLibrary": "",
     "errorRemovingFromLibrary": "",
     "confirmAddLibrary": "Ще се добавят {{numShapes}} фигура(и) във вашата библиотека. Сигурни ли сте?",
@@ -157,27 +180,33 @@
     "cannotRestoreFromImage": "Не може да бъде възстановена сцена от този файл",
     "invalidSceneUrl": "",
     "resetLibrary": "",
+    "removeItemsFromsLibrary": "",
     "invalidEncryptionKey": ""
   },
   "errors": {
-    "unsupportedFileType": "",
+    "unsupportedFileType": "Този файлов формат не се поддържа.",
     "imageInsertError": "",
     "fileTooBig": "",
     "svgImageInsertError": "",
-    "invalidSVGString": ""
+    "invalidSVGString": "",
+    "cannotResolveCollabServer": "",
+    "importLibraryError": ""
   },
   "toolBar": {
     "selection": "Селекция",
-    "image": "",
+    "image": "Вмъкване на изображение",
     "rectangle": "Правоъгълник",
     "diamond": "Диамант",
     "ellipse": "Елипс",
     "arrow": "Стрелка",
     "line": "Линия",
-    "freedraw": "",
+    "freedraw": "Рисуване",
     "text": "Текст",
     "library": "Библиотека",
-    "lock": "Поддържайте избрания инструмент активен след рисуване"
+    "lock": "Поддържайте избрания инструмент активен след рисуване",
+    "penMode": "",
+    "link": "",
+    "eraser": ""
   },
   "headings": {
     "canvasActions": "Действия по платното",
@@ -197,9 +226,13 @@
     "resizeImage": "",
     "rotate": "Можете да ограничите ъглите, като държите SHIFT, докато се въртите",
     "lineEditor_info": "Кликнете два пъти или натиснете Enter за да промените точките",
-    "lineEditor_pointSelected": "Натиснете Delete за да изтриете точка, CtrlOrCmd+D за дуплициране, или извлачете за да преместите",
-    "lineEditor_nothingSelected": "Изберете точка за местене или изтриване, или пък задръжте Alt и натиснете за да добавите нови точки",
-    "placeImage": ""
+    "lineEditor_pointSelected": "Натиснете Delete за да изтриете точка(и), CtrlOrCmd+D за дуплициране, или извлачете за да преместите",
+    "lineEditor_nothingSelected": "",
+    "placeImage": "",
+    "publishLibrary": "",
+    "bindTextToElement": "Натиснете Enter, за да добавите",
+    "deepBoxSelect": "",
+    "eraserRevert": ""
   },
   "canvasError": {
     "cannotShowPreview": "Невъзможност за показване на preview",
@@ -246,6 +279,8 @@
   "helpDialog": {
     "blog": "Прочетете нашия блог",
     "click": "клик",
+    "deepSelect": "",
+    "deepBoxSelect": "",
     "curvedArrow": "Извита стрелка",
     "curvedLine": "Извита линия",
     "documentation": "Документация",
@@ -257,17 +292,67 @@
     "howto": "Следвайте нашите ръководства",
     "or": "или",
     "preventBinding": "Спри прилепяне на стрелките",
-    "shapes": "Фигури",
+    "tools": "",
     "shortcuts": "Клавиши за бърз достъп",
     "textFinish": "",
     "textNewLine": "",
     "title": "Помощ",
     "view": "Преглед",
     "zoomToFit": "Приближи докато се виждат всички елементи",
-    "zoomToSelection": "Приближи селекцията"
+    "zoomToSelection": "Приближи селекцията",
+    "toggleElementLock": ""
   },
   "clearCanvasDialog": {
     "title": ""
+  },
+  "publishDialog": {
+    "title": "",
+    "itemName": "",
+    "authorName": "",
+    "githubUsername": "",
+    "twitterUsername": "",
+    "libraryName": "",
+    "libraryDesc": "",
+    "website": "",
+    "placeholder": {
+      "authorName": "",
+      "libraryName": "",
+      "libraryDesc": "",
+      "githubHandle": "",
+      "twitterHandle": "",
+      "website": ""
+    },
+    "errors": {
+      "required": "",
+      "website": ""
+    },
+    "noteDescription": {
+      "pre": "",
+      "link": "",
+      "post": ""
+    },
+    "noteGuidelines": {
+      "pre": "",
+      "link": "",
+      "post": ""
+    },
+    "noteLicense": {
+      "pre": "",
+      "link": "",
+      "post": ""
+    },
+    "noteItems": "",
+    "atleastOneLibItem": "",
+    "republishWarning": ""
+  },
+  "publishSuccessDialog": {
+    "title": "",
+    "content": "",
+    "link": ""
+  },
+  "confirmDialog": {
+    "resetLibrary": "",
+    "removeItemsFromLib": ""
   },
   "encrypted": {
     "tooltip": "Вашите рисунки са криптирани от край до край, така че сървърите на Excalidraw няма да могат да ги виждат.",
@@ -289,6 +374,7 @@
     "width": "Широчина"
   },
   "toast": {
+    "addedToLibrary": "",
     "copyStyles": "Копирани стилове.",
     "copyToClipboard": "Копирано в клипборда.",
     "copyToClipboardAsPng": "",
